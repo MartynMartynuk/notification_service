@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
@@ -68,7 +70,7 @@ class MailinglistAPIView(ModelViewSet):
                 return Response(self.get_message_stat(param_args.get('message_stat')))
         return Response({'mailinglists': MailingListSerializer(mailinglists, many=True).data})
 
-    def post(self, request):
+    def create(self, request, *args, **kwargs):
         serializer = MailingListSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
