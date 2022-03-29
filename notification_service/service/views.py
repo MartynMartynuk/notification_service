@@ -88,3 +88,43 @@ class MailinglistAPIView(ModelViewSet):
         except:
             return Response({"error": "Deletion failed"})
 
+
+class MessageAPIView(ModelViewSet):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+
+    def get(self, request):
+        messages = Message.objects.all()
+        return Response({'messages': MessageSerializer(messages, many=True).data})
+
+    def post(self, request):
+        serializer = MessageSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'messages': serializer.data})
+
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get("id", None)
+        if not pk:
+            return Response({"error": 'Method DELETE not allowed'})
+        try:
+            instance = Message.objects.get(pk=pk)
+        except:
+            return Response({"error": "Object does not exists"})
+
+        serializer = MessageSerializer(data=request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"post": serializer.data})
+
+    def destroy(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        print(kwargs.get("id"))
+        if not pk:
+            return Response({"error": "Method DELETE not allowed"})
+        try:
+            Message.objects.get(pk=pk).delete()
+            return Response({"complete": "delete message " + str(pk)})
+        except:
+            return Response({"error": "Deletion failed"})
+

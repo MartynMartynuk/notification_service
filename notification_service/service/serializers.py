@@ -34,3 +34,20 @@ class MailingListSerializer(ModelSerializer):
         instance.end_time = validated_data.get('end_time', instance.end_time)
         instance.save()
         return instance
+
+
+class MessageSerializer(ModelSerializer):
+    class Meta:
+        model = Message
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return Message.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.time_create = validated_data.get('time_create', instance.time_create)
+        instance.sending_status = validated_data.get('sending_status', instance.sending_status)
+        instance.mailinglist_id = validated_data.get('mailinglist_id', instance.mailinglist_id)
+        instance.client_id = validated_data.get('client_id', instance.client_id)
+        instance.save()
+        return instance
