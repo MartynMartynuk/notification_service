@@ -21,6 +21,7 @@ from service.views import *
 router = SimpleRouter()
 
 router.register('api/mailinglist', MailinglistAPIView)
+router.register('api/mailinglist/<int:id>/', MailinglistAPIView)
 router.register('api/client', ClientAPIView, basename='Clients')
 router.register('api/client/<int:id>/', ClientAPIView, basename='Clients_put')
 

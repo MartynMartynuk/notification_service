@@ -4,7 +4,7 @@ import pytz
 
 class MailingList(models.Model):
     id = models.IntegerField(primary_key=True)
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(auto_now_add=True)
     message_text = models.TextField()
     client_filter = models.CharField(max_length=255)
     end_time = models.DateTimeField(verbose_name='Окончание рассылки')
